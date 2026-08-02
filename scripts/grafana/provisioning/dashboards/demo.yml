@@ -1,0 +1,9 @@
+apiVersion: 1
+providers:
+  - allowUiUpdates: true # Allow UI updates to the dashboard
+    disableDeletion: false # Disable deletion of the dashboard
+    name: demo # Name of the dashboard
+    options:
+      foldersFromFilesStructure: true 
+      path: /etc/grafana/demo-dashboards
+    updateIntervalSeconds: 10
