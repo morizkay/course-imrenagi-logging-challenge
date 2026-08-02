@@ -53,9 +53,7 @@ func main() {
 	// Create a new router
 	r := mux.NewRouter()
 	// Handle the root path
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		functions.Handler(ctx, w, r)
-	})
+	r.HandleFunc("/", functions.Handler)
 
 	// start: set up any of your logger configuration here if necessary
 
