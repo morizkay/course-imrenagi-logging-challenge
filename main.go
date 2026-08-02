@@ -9,12 +9,28 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/morizkay/course-imrenagi-logging-challenge/functions"
+	"github.com/morizkay/course-imrenagi-logging-challenge/logs"
 	"github.com/rs/zerolog/log"
 )
 
 func main() {
 	// Welcome Log
-	log.Info().Msg("Welcome to the logging challenge!")
+
+	// Initialize the logger
+	infoLogger, err := logs.NewLogger(logs.LoggerConfig{
+		Level:      "info",
+		TimeFormat: "2006-01-02 15:04:05",
+		Caller:     true,
+		StackTrace: true,
+	})
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed to initialize logger")
+	}
+	log.Logger = infoLogger.Logger
+
+	infoLogger.Info().Msg("Welcome to the logging challenge!")
+	infoLogger.Warn().Msg("This is a warning message")
+	infoLogger.Error().Msg("This is an error message")
 
 	// Create a context and a cancel function
 	ctx := context.Background()
