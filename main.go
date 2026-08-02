@@ -13,6 +13,9 @@ import (
 )
 
 func main() {
+	// Welcome Log
+	log.Info().Msg("Welcome to the logging challenge!")
+
 	// Create a context and a cancel function
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
