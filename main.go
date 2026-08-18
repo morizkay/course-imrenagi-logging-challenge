@@ -14,24 +14,6 @@ import (
 )
 
 func main() {
-	// Welcome Log
-
-	// Initialize the logger
-	infoLogger, err := logs.NewLogger(logs.LoggerConfig{
-		Level:      "info",
-		TimeFormat: "2006-01-02 15:04:05",
-		Caller:     true,
-		StackTrace: true,
-	})
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed to initialize logger")
-	}
-	log.Logger = infoLogger.Logger
-
-	infoLogger.Info().Msg("Welcome to the logging challenge!")
-	infoLogger.Warn().Msg("This is a warning message")
-	infoLogger.Error().Msg("This is an error message")
-
 	// Create a context and a cancel function
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
@@ -56,7 +38,28 @@ func main() {
 	r.HandleFunc("/", functions.Handler)
 
 	// start: set up any of your logger configuration here if necessary
+	logOutput := os.Getenv("LOG_OUTPUT") // stdout | file | both
+	logFile := os.Getenv("LOG_FILE")
+	if logFile == "" {
+		logFile = "logs/app.log"
+	}
 
+	infoLogger, err := logs.NewLogger(logs.LoggerConfig{
+		Level:      "info",
+		TimeFormat: "2006-01-02 15:04:05",
+		Caller:     true,
+		StackTrace: true,
+		Output:     logOutput,
+		FilePath:   logFile,
+	})
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed to initialize logger")
+	}
+	log.Logger = infoLogger.Logger
+
+	infoLogger.Info().Str("log_output", logOutput).Str("log_file", logFile).Msg("Welcome to the logging challenge!")
+	infoLogger.Warn().Msg("This is a warning message")
+	infoLogger.Error().Msg("This is an error message")
 	// end: set up any of your logger configuration here
 
 	// Create a new HTTP server

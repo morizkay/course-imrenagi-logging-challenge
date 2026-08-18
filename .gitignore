@@ -33,3 +33,7 @@ go.work.sum
 
 # Temp
 *tmp
+
+# Application logs
+logs/app.log
+logs/*.log
